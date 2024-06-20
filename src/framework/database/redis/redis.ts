@@ -1,5 +1,3 @@
-// src/framework/database/redis/redis.ts
-
 import Redis from 'ioredis';
 import config from '../../../config';
 
@@ -7,8 +5,8 @@ let redisClient: Redis | null = null;
 
 function init(): void {
   redisClient = new Redis({
-    port: config.redis.port,  // Redis port from config
-    host: config.redis.host,  // Redis host from config
+    port: config.redis.port, // Redis port from config
+    host: config.redis.host, // Redis host from config
   });
 
   redisClient.on('connect', () => {
@@ -29,7 +27,9 @@ function init(): void {
 
   process.on('SIGINT', () => {
     console.log('On client quit');
-    redisClient!.quit();
+    if (redisClient) {
+      redisClient.quit();
+    }
   });
 }
 

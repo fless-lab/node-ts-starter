@@ -122,7 +122,7 @@ The `.env` file contains the environment variables required by the application. 
 
 ```env
 # Engine
-PORT=3300
+PORT=9095
 
 # Database
 DB_URI=mongodb://mongo:27017

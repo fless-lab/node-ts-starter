@@ -13,6 +13,6 @@ app.use(helmet()); // Enable Helmet
 app.use(morgan('dev')); // Enable Morgan
 
 // Define routes
-// app.use('/', routes); 
+// app.use('/', routes);
 
 export default app;

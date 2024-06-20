@@ -3,13 +3,17 @@ import config from '../../../config';
 
 let minioClient: Client | null = null;
 
-function connect(endpoint: string, accessKey: string, secretKey: string): Client {
+function connect(
+  endpoint: string,
+  accessKey: string,
+  secretKey: string,
+): Client {
   minioClient = new Client({
     endPoint: endpoint,
     port: 9000,
     useSSL: false,
     accessKey,
-    secretKey
+    secretKey,
   });
 
   console.info('MinIO connected successfully');
@@ -18,7 +22,11 @@ function connect(endpoint: string, accessKey: string, secretKey: string): Client
 
 function init(): Client {
   if (!minioClient) {
-    minioClient = connect(config.minio.endpoint, config.minio.accessKey, config.minio.secretKey);
+    minioClient = connect(
+      config.minio.endpoint,
+      config.minio.accessKey,
+      config.minio.secretKey,
+    );
   }
   return minioClient;
 }

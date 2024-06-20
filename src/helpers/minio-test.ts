@@ -1,4 +1,4 @@
-import { init as initMinio, getClient } from '../framework/storage/minio/minio';
+import { init as initMinio } from '../framework/storage/minio/minio';
 
 async function testMinioConnection(): Promise<void> {
   try {

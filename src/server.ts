@@ -1,13 +1,16 @@
-// server.ts
-
 import { initServices } from './helpers';
 import config from './config';
 
-initServices().then(() => {
-    const app = require('./framework/webserver/express').default;
+async function startServer() {
+  try {
+    await initServices();
+    const { default: app } = await import('./framework/webserver/express');
     app.listen(config.port, () => {
-        console.log(`Server running on http://localhost:${config.port}`);
+      console.log(`Server running on http://localhost:${config.port}`);
     });
-}).catch(error => {
+  } catch (error) {
     console.error('Failed to initialize services:', error);
-});
+  }
+}
+
+startServer();

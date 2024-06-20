@@ -1,4 +1,7 @@
-import { init as initRedis, getClient, close } from '../framework/database/redis/redis';
+import {
+  init as initRedis,
+  getClient,
+} from '../framework/database/redis/redis';
 
 async function testRedisConnection(): Promise<void> {
   try {

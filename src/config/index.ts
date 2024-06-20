@@ -37,14 +37,20 @@ const config: Config = {
   },
   minio: {
     endpoint: process.env.MINIO_ENDPOINT || 'localhost',
-    apiPort: process.env.MINIO_API_PORT ? parseInt(process.env.MINIO_API_PORT, 10) : 9500,
-    consolePort: process.env.MINIO_CONSOLE_PORT ? parseInt(process.env.MINIO_CONSOLE_PORT, 10) : 9050,
+    apiPort: process.env.MINIO_API_PORT
+      ? parseInt(process.env.MINIO_API_PORT, 10)
+      : 9500,
+    consolePort: process.env.MINIO_CONSOLE_PORT
+      ? parseInt(process.env.MINIO_CONSOLE_PORT, 10)
+      : 9050,
     accessKey: process.env.MINIO_ACCESS_KEY || 'your-access-key',
     secretKey: process.env.MINIO_SECRET_KEY || 'your-secret-key',
   },
   maildev: {
     host: process.env.MAILDEV_HOST || 'localhost',
-    port: process.env.MAILDEV_PORT ? parseInt(process.env.MAILDEV_PORT, 10) : 1025,
+    port: process.env.MAILDEV_PORT
+      ? parseInt(process.env.MAILDEV_PORT, 10)
+      : 1025,
   },
 };
 

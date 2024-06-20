@@ -5,26 +5,34 @@ let mongoClient: Connection | null = null;
 
 async function connect(uri: string, dbName: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    mongoose.connect(uri, { dbName })
+    mongoose
+      .connect(uri, { dbName })
       .then(() => {
         mongoClient = mongoose.connection;
         console.info('Mongoose connected to db');
         resolve();
       })
-      .catch((err:any) => {
+      .catch((err: mongoose.Error) => {
         console.error('Mongoose connection error:', err);
         reject(err);
       });
   });
 }
 
-async function init(uri: string = config.db.uri, dbName: string = config.db.name): Promise<void> {
+async function init(
+  uri: string = config.db.uri,
+  dbName: string = config.db.name,
+): Promise<void> {
   try {
     await connect(uri, dbName);
     console.info('Mongodb initialised.');
-  } catch (err) {
-    console.error('Connection error:', err);
-    throw err;  
+  } catch (err: unknown) {
+    if (err instanceof mongoose.Error) {
+      console.error('Connection error:', err);
+    } else {
+      console.error('Unexpected error:', err);
+    }
+    throw err;
   }
 }
 

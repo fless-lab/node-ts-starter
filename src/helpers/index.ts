@@ -1,1 +1,1 @@
-export * from "./init-services";
+export * from './init-services';
