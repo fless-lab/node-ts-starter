@@ -1,6 +1,6 @@
 # Node.js TypeScript Starter Project
 
-This project is a simple and lightweight Node.js boilerplate using TypeScript. It includes Docker configurations to run the application in both development and production modes. 
+This project is a simple and lightweight Node.js boilerplate using TypeScript. It includes Docker configurations to run the application in both development and production modes.
 
 ## Table of Contents
 
@@ -11,6 +11,10 @@ This project is a simple and lightweight Node.js boilerplate using TypeScript. I
 5. [Scripts Explanation](#scripts-explanation)
 6. [Environment Variables](#environment-variables)
 7. [Docker Configuration](#docker-configuration)
+8. [Linting and Formatting](#linting-and-formatting)
+9. [Commit Message Guidelines](#commit-message-guidelines)
+10. [Accessing Services](#accessing-services)
+11. [Contributing](#contributing)
 
 ## Prerequisites
 
@@ -127,10 +131,11 @@ PORT=9095
 # Database
 DB_URI=mongodb://mongo:27017
 DB_NAME=mydatabase
+MONGO_CLIENT_PORT=9005
 
 # Cache
 REDIS_HOST=redis
-REDIS_PORT=6379
+REDIS_SERVER_PORT=9079
 
 # MinIO
 MINIO_ENDPOINT=minio
@@ -142,6 +147,8 @@ MINIO_CONSOLE_PORT=9050
 # Maildev
 MAILDEV_HOST=maildev
 MAILDEV_PORT=1025
+MAILDEV_SMTP=9025
+MAILDEV_WEBAPP_PORT=9080
 ```
 
 ## Docker Configuration
@@ -163,3 +170,73 @@ docker-compose up --build
 ```
 
 This command will build the Docker images and start the services defined in `docker-compose.yml`.
+
+## Linting and Formatting
+
+This project uses ESLint and Prettier for code linting and formatting.
+
+### Running ESLint
+
+To check for linting errors:
+
+```sh
+npm run lint
+```
+
+To fix linting errors automatically:
+
+```sh
+npm run lint:fix
+```
+
+### Running Prettier
+
+To format your code:
+
+```sh
+npm run format
+```
+
+## Commit Message Guidelines
+
+To ensure consistent commit messages, this project uses commitlint with husky to enforce commit message guidelines.
+
+### Commit Message Format
+
+- **build**: Changes that affect the build system or external dependencies
+- **chore**: Miscellaneous changes that don't affect the main codebase (e.g., configuring development tools, setting up project-specific settings)
+- **ci**: Changes to our CI configuration files and scripts
+- **docs**: Documentation only changes
+- **feat**: A new feature
+- **fix**: A bug fix
+- **update**: Update something for a specific use case
+- **perf**: A code change that improves performance
+- **refactor**: A code change that neither fixes a bug nor adds a feature
+- **style**: Changes that do not affect the meaning of the code (e.g., white-space, formatting, missing semi-colons)
+- **test**: Adding missing tests or correcting existing tests
+- **translation**: Changes related to translations or language localization
+- **sec**: Changes that address security vulnerabilities, implement security measures, or enhance the overall security of the codebase
+
+### Setting Up Commitlint
+
+Commitlint and Husky are already configured and set up to ensure that commit messages follow the specified format before they are committed to the repository.
+
+## Accessing Services
+
+After running the application, you can access the following services:
+
+- **Node.js Application**: [http://localhost:9095](http://localhost:9095)
+- **MongoDB**: Accessible on port `9005`
+- **Redis**: Accessible on port `9079`
+- **MinIO API**: Accessible on port `9500`
+- **MinIO WebApp**: Accessible on port `9050`
+- **MailDev SMTP (external)**: Accessible on port `9025`
+- **MailDev WebApp**: Accessible on port `9080`
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+Feel free to check the [issues page](https://github.com/fless-lab/node-ts-starter/issues) if you want to contribute.
+
+Don't forget to give a star if you find this project useful!

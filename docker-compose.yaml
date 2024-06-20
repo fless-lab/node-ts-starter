@@ -18,7 +18,7 @@ services:
     image: mongo
     container_name: node-ts-starter-mongo
     ports:
-      - "9005:27017"
+      - "${MONGO_CLIENT_PORT}:27017"
     volumes:
       - mongo-data:/data/db
 
@@ -26,7 +26,7 @@ services:
     image: redis:latest
     container_name: node-ts-starter-redis
     ports:
-      - "9079:6379"
+      - "${REDIS_SERVER_PORT}:6379"
 
   minio:
     image: minio/minio
@@ -45,8 +45,8 @@ services:
     image: maildev/maildev
     container_name: node-ts-starter-maildev
     ports:
-      - "9025:1025"
-      - "1080:1080"
+      - "${MAILDEV_SMTP}:1025"
+      - "${MAILDEV_WEBAPP_PORT}:1080"
     healthcheck:
       test: ["CMD", "wget", "--spider", "http://localhost:1080"]
       interval: 30s

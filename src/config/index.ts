@@ -39,10 +39,10 @@ const config: Config = {
     endpoint: process.env.MINIO_ENDPOINT || 'localhost',
     apiPort: process.env.MINIO_API_PORT
       ? parseInt(process.env.MINIO_API_PORT, 10)
-      : 9500,
+      : 9000,
     consolePort: process.env.MINIO_CONSOLE_PORT
       ? parseInt(process.env.MINIO_CONSOLE_PORT, 10)
-      : 9050,
+      : 9001,
     accessKey: process.env.MINIO_ACCESS_KEY || 'your-access-key',
     secretKey: process.env.MINIO_SECRET_KEY || 'your-secret-key',
   },
