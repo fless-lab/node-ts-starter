@@ -83,17 +83,52 @@ Here is an overview of the project's structure:
 │   │   ├── controllers
 │   │   ├── services
 │   │   ├── utils
+│   │   │   ├── handlers
+│   │   │   │   ├── error
+│   │   │   │   │   ├── global.ts
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── res
+│   │   │   │   │   └── index.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── middlewares
+│   │   │   │   ├── index.ts
+│   │   │   │   └── client-authentication.ts
+│   │   │   ├── types
+│   │   │   │   └── index.ts
+│   │   │   └── validators
+│   │   │       └── index.ts
 │   │   ├── models
 │   │   ├── repositories
-│   │   └── routes
+│   │   ├── services
+│   │   ├── routes
+│   │   └── templates
+│   │       └── mail
+│   │           └── welcome.html
 │   ├── constants
-│   ├── templates
+│   │   └── index.ts
 │   ├── helpers
+│   │   ├── minio-test.ts
+│   │   ├── db-connection-test.ts
+│   │   ├── redis-test.ts
+│   │   ├── index.ts
+│   │   └── init-services.ts
 │   ├── server.ts
 │   └── framework
 │       ├── database
+│       │   ├── mongoose
+│       │   │   └── db.ts
+│       │   ├── redis
+│       │   │   └── redis.ts
+│       │   └── index.ts
 │       ├── webserver
-│       └── storage
+│       │   └── express.ts
+│       ├── storage
+│       │   └── minio
+│       │       └── minio.ts
+│       └── index.ts
+├── commitlint.config.js
+├── docker-compose.yaml
+└── .prettierignore
 ```
 
 ## Scripts Explanation
@@ -127,6 +162,11 @@ The `.env` file contains the environment variables required by the application. 
 ```env
 # Engine
 PORT=9095
+ENABLE_CLIENT_AUTH=true
+
+# Client authentication
+BASIC_AUTH_USER=admin
+BASIC_AUTH_PASS=secret
 
 # Database
 DB_URI=mongodb://mongo:27017

@@ -36,6 +36,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "helmet": "^7.1.0",
+    "http-errors": "^2.0.0",
     "ioredis": "^5.4.1",
     "minio": "^8.0.0",
     "mongoose": "^8.4.3",
@@ -64,5 +65,4 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.0.4"
   }
-  
 }
