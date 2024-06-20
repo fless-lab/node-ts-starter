@@ -5,7 +5,7 @@ services:
     build: .
     container_name: node-ts-starter-app
     ports:
-      - "${PORT}:3300"
+      - "${PORT}:${PORT}"
     env_file:
       - .env
     depends_on:
