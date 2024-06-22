@@ -1,6 +1,6 @@
 # Node.js TypeScript Starter Project
 
-This project is a simple and lightweight Node.js boilerplate using TypeScript. It includes Docker configurations to run the application in both development and production modes.
+This project is a simple and lightweight Node.js boilerplate using TypeScript. It includes Docker configurations to run the application in both development and production modes, along with enhanced security features such as rate limiting and brute force protection.
 
 ## Table of Contents
 
@@ -11,10 +11,11 @@ This project is a simple and lightweight Node.js boilerplate using TypeScript. I
 5. [Scripts Explanation](#scripts-explanation)
 6. [Environment Variables](#environment-variables)
 7. [Docker Configuration](#docker-configuration)
-8. [Linting and Formatting](#linting-and-formatting)
-9. [Commit Message Guidelines](#commit-message-guidelines)
-10. [Accessing Services](#accessing-services)
-11. [Contributing](#contributing)
+8. [Security Features](#security-features)
+9. [Linting and Formatting](#linting-and-formatting)
+10. [Commit Message Guidelines](#commit-message-guidelines)
+11. [Accessing Services](#accessing-services)
+12. [Contributing](#contributing)
 
 ## Prerequisites
 
@@ -64,70 +65,93 @@ bash bin/start.sh --prod
 ## Project Structure
 
 Here is an overview of the project's structure:
+
 ```
 /home/raouf/workspaces/personnal/projects/node-ts-starter
-├── Dockerfile
-├── docker-compose.yml
-├── package.json
-├── package-lock.json
-├── tsconfig.json
+├── .eslintrc.json
+├── .env
 ├── .env.example
-├── .env (generated)
+├── .eslintignore
+├── .prettierrc
 ├── bin
 │   ├── install.sh
 │   └── start.sh
+├── Dockerfile
+├── docker-compose.yaml
+├── package.json
+├── package-lock.json
+├── README.md
 ├── src
-│   ├── config
-│   │   └── index.ts
 │   ├── app
 │   │   ├── controllers
+│   │   │   └── user.controller.ts
+│   │   ├── models
+│   │   │   └── user.model.ts
+│   │   ├── repositories
+│   │   │   ├── base.repo.ts
+│   │   │   └── user.repo.ts
+│   │   ├── routes
+│   │   │   ├── routes.ts
+│   │   │   └── user.routes.ts
 │   │   ├── services
+│   │   │   ├── base.service.ts
+│   │   │   └── user.service.ts
+│   │   ├── templates
+│   │   │   ├── app
+│   │   │   │   └── presentation.html
+│   │   │   └── mail
+│   │   │       └── welcome.html
 │   │   ├── utils
 │   │   │   ├── handlers
 │   │   │   │   ├── error
 │   │   │   │   │   ├── global.ts
+│   │   │   │   │   ├── notfound.ts
 │   │   │   │   │   └── index.ts
 │   │   │   │   ├── res
 │   │   │   │   │   └── index.ts
 │   │   │   │   └── index.ts
 │   │   │   ├── middlewares
-│   │   │   │   ├── index.ts
-│   │   │   │   └── client-authentication.ts
+│   │   │   │   ├── bruteforce.ts
+│   │   │   │   ├── client-authentication.ts
+│   │   │   │   ├── rate-limiter.ts
+│   │   │   │   ├── validate.ts
+│   │   │   │   └── index.ts
 │   │   │   ├── types
+│   │   │   │   ├── service-response.ts
+│   │   │   │   ├── user.ts
 │   │   │   │   └── index.ts
 │   │   │   └── validators
+│   │   │       ├── user.ts
 │   │   │       └── index.ts
-│   │   ├── models
-│   │   ├── repositories
-│   │   ├── services
-│   │   ├── routes
-│   │   └── templates
-│   │       └── mail
-│   │           └── welcome.html
+│   ├── config
+│   │   └── index.ts
 │   ├── constants
 │   │   └── index.ts
+│   ├── framework
+│   │   ├── database
+│   │   │   ├── mongoose
+│   │   │   │   └── db.ts
+│   │   │   ├── redis
+│   │   │   │   └── redis.ts
+│   │   │   └── index.ts
+│   │   ├── storage
+│   │   │   └── minio
+│   │   │       └── minio.ts
+│   │   ├── webserver
+│   │   │   └── express.ts
+│   │   └── index.ts
 │   ├── helpers
-│   │   ├── minio-test.ts
 │   │   ├── db-connection-test.ts
-│   │   ├── redis-test.ts
 │   │   ├── index.ts
-│   │   └── init-services.ts
+│   │   ├── init-services.ts
+│   │   ├── minio-test.ts
+│   │   ├── redis-test.ts
+│   │   ├── string.ts
+│   │   └── time.ts
 │   ├── server.ts
-│   └── framework
-│       ├── database
-│       │   ├── mongoose
-│       │   │   └── db.ts
-│       │   ├── redis
-│       │   │   └── redis.ts
-│       │   └── index.ts
-│       ├── webserver
-│       │   └── express.ts
-│       ├── storage
-│       │   └── minio
-│       │       └── minio.ts
-│       └── index.ts
+│   └── index.ts
 ├── commitlint.config.js
-├── docker-compose.yaml
+├── tsconfig.json
 └── .prettierignore
 ```
 
@@ -147,11 +171,11 @@ This script runs the application by performing the following tasks:
 - Sets the `NODE_ENV` environment variable based on the provided argument (`--prod` for production).
 - Starts the Docker containers using Docker Compose.
 
-### Dockerfile
+## Dockerfile
 
 The Dockerfile defines how the Docker image is built. It includes steps for setting up the working directory, installing dependencies, copying the source code, building the TypeScript project, and defining the startup command.
 
-### docker-compose.yml
+## docker-compose.yml
 
 This file defines the Docker services for the application, including the application itself, MongoDB, Redis, MinIO, and Maildev. It uses environment variables from the `.env` file to configure the services.
 
@@ -167,6 +191,16 @@ ENABLE_CLIENT_AUTH=true
 # Client authentication
 BASIC_AUTH_USER=admin
 BASIC_AUTH_PASS=secret
+
+# Rate limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX=100
+
+# Brute force protection
+BRUTE_FORCE_FREE_RETRIES=5
+BRUTE_FORCE_MIN_WAIT=300000
+BRUTE_FORCE_MAX_WAIT=3600000
+BRUTE_FORCE_LIFETIME=86400
 
 # Database
 DB_URI=mongodb://mongo:27017
@@ -210,6 +244,26 @@ docker-compose up --build
 ```
 
 This command will build the Docker images and start the services defined in `docker-compose.yml`.
+
+## Security Features
+
+### Rate Limiting
+
+The rate limiter middleware is configured to limit the number of requests to the API within a specified time window. This helps protect against DoS attacks.
+
+### Brute Force Protection
+
+Brute force protection is implemented using `express-brute` and `express-brute-mongo`. It limits the number of failed login attempts and progressively increases the wait time between attempts after reaching a threshold.
+
+### Hiding Technology Stack
+
+The `helmet` middleware is used to hide the `X-Powered-By` header to
+
+ obscure the technology stack of the application.
+
+### Content Security Policy
+
+A strict content security policy is enforced using the `helmet` middleware to prevent loading of unauthorized resources.
 
 ## Linting and Formatting
 

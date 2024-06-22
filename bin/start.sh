@@ -37,6 +37,7 @@ bash "$PROJECT_ROOT/bin/install.sh"
 
 # Inject NODE_ENV into .env file
 echo "NODE_ENV=$ENVIRONMENT" >> "$PROJECT_ROOT/.env"
+echo ""
 echo "🔄 NODE_ENV set to $ENVIRONMENT in .env file."
 
 # Start the Docker containers

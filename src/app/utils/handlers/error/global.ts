@@ -1,15 +1,30 @@
-import { Response } from 'express';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
-export const globalErrorHandler = (err: any, res: Response) => {
-  const statusCode = err.status || 500;
-  const message = err.message || 'Internal Server Error';
+import { Request, Response, NextFunction } from 'express';
+import ErrorResponse from './response';
+import ApiResponse from '../api-reponse';
 
-  const errorResponse = {
-    status: 'error',
-    statusCode,
-    message,
+const errorHandler = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (err instanceof ErrorResponse) {
+    return ApiResponse.error(res, { success: false, error: err });
+  }
+
+  const genericError = new ErrorResponse(
+    'GENERAL_ERROR',
+    err.message || 'An unexpected error occurred',
+    [],
+  );
+
+  return ApiResponse.error(res, {
+    success: false,
+    error: genericError,
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
-  };
-
-  res.status(statusCode).json(errorResponse);
+  } as any);
 };
+
+export default errorHandler;
