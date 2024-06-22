@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import ErrorCodes, { ErrorCode } from './codes';
 
 class ErrorResponse extends Error {
