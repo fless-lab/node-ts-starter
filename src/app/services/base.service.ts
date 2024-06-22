@@ -1,4 +1,4 @@
-import { BaseRepository } from '../repositories/base-repository';
+import { BaseRepository } from '../repositories/base.repo';
 import { Document } from 'mongoose';
 import ErrorResponse from '../utils/handlers/error/response';
 import { SuccessResponseType, ErrorResponseType } from '../utils/types';
@@ -6,7 +6,7 @@ import { escapeRegex, slugify } from '../../helpers/string';
 
 export class BaseService<T extends Document> {
   protected repository: BaseRepository<T>;
-  protected handlesSlug: boolean;
+  protected handleSlug: boolean;
   protected uniqueFields: string[];
   protected populateFields: string[];
   protected allowedFilterFields?: string[];
@@ -14,11 +14,11 @@ export class BaseService<T extends Document> {
 
   constructor(
     repository: BaseRepository<T>,
-    handlesSlug = false,
+    handleSlug = false,
     populateFields: string[] = [],
   ) {
     this.repository = repository;
-    this.handlesSlug = handlesSlug;
+    this.handleSlug = handleSlug;
     this.uniqueFields = this.detectUniqueFields();
     this.populateFields = populateFields;
   }
@@ -66,7 +66,7 @@ export class BaseService<T extends Document> {
     inputSlugField: keyof T = 'name' as any,
     slugField: keyof T = 'slug' as any,
   ): Promise<void> {
-    if (!this.handlesSlug || !doc[inputSlugField]) return;
+    if (!this.handleSlug || !doc[inputSlugField]) return;
 
     let slug = slugify(doc[inputSlugField] as unknown as string);
     let count = 0;
@@ -109,7 +109,7 @@ export class BaseService<T extends Document> {
       for (const field of this.uniqueFields) {
         await this.ensureUniqueField(input, field as keyof T);
       }
-      if (this.handlesSlug) await this.ensureUniqueSlug(input);
+      if (this.handleSlug) await this.ensureUniqueSlug(input);
       await this.ensureRequiredFields(input);
       const document = await this.repository.create(input);
       return { success: true, document };
@@ -235,7 +235,7 @@ export class BaseService<T extends Document> {
         _id: documentToUpdate._id,
       };
       if (
-        this.handlesSlug &&
+        this.handleSlug &&
         (fieldsToUpdate as any).name &&
         (documentToUpdate as any).name !== (fieldsToUpdate as any).name
       ) {
