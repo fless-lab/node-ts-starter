@@ -9,6 +9,13 @@ interface Config {
   enableClientAuth: boolean;
   basicAuthUser: string;
   basicAuthPass: string;
+  jwt: {
+    accessTokenSecret: string;
+    refreshTokenSecret: string;
+    accessTokenExpireTime: string;
+    refreshTokenExpireTime: string;
+    tokenIssuer: string;
+  };
   rate: {
     limit: number;
     max: number;
@@ -28,6 +35,8 @@ interface Config {
     host: string;
     port: number;
     serverPort: number;
+    tokenExpireTime: number;
+    blacklistExpireTime: number;
   };
   minio: {
     endpoint: string;
@@ -51,6 +60,13 @@ const config: Config = {
   enableClientAuth: process.env.ENABLE_CLIENT_AUTH === 'true',
   basicAuthUser: process.env.BASIC_AUTH_USER || 'admin',
   basicAuthPass: process.env.BASIC_AUTH_PASS || 'secret',
+  jwt: {
+    accessTokenSecret: process.env.ACCESS_TOKEN_SECRET || '',
+    refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET || '',
+    accessTokenExpireTime: process.env.ACCESS_TOKEN_EXPIRE_TIME || '1h',
+    refreshTokenExpireTime: process.env.REFRESH_TOKEN_EXPIRE_TIME || '7d',
+    tokenIssuer: process.env.TOKEN_ISSUER || 'your-issuer',
+  },
   rate: {
     limit: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10), // 15 minutes in milliseconds
     max: parseInt(process.env.RATE_LIMIT_MAX || '100', 10),
@@ -70,6 +86,14 @@ const config: Config = {
     host: process.env.REDIS_HOST || 'localhost',
     port: parseInt(process.env.REDIS_PORT || '6379', 10),
     serverPort: parseInt(process.env.REDIS_SERVER_PORT || '9079', 10),
+    tokenExpireTime: parseInt(
+      process.env.REDIS_TOKEN_EXPIRE_TIME || '31536000',
+      10,
+    ), // 1 year in seconds
+    blacklistExpireTime: parseInt(
+      process.env.REDIS_BLACKLIST_EXPIRE_TIME || '2592000',
+      10,
+    ), // 1 month in seconds
   },
   minio: {
     endpoint: process.env.MINIO_ENDPOINT || 'localhost',
