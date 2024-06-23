@@ -39,6 +39,11 @@ const ErrorCodes: ErrorCodes = {
     message: 'Required field(s) missing.',
     statusCode: 400,
   },
+  BAD_REQUEST: {
+    code: 'BAD_REQUEST',
+    message: 'Required field(s) missing.',
+    statusCode: 400,
+  },
   FOUND: {
     code: 'FOUND',
     message: 'The requested item was found.',
