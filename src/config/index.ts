@@ -9,6 +9,9 @@ interface Config {
   enableClientAuth: boolean;
   basicAuthUser: string;
   basicAuthPass: string;
+  bcrypt: {
+    saltRounds: number;
+  };
   jwt: {
     accessTokenSecret: string;
     refreshTokenSecret: string;
@@ -60,6 +63,9 @@ const config: Config = {
   enableClientAuth: process.env.ENABLE_CLIENT_AUTH === 'true',
   basicAuthUser: process.env.BASIC_AUTH_USER || 'admin',
   basicAuthPass: process.env.BASIC_AUTH_PASS || 'secret',
+  bcrypt: {
+    saltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10),
+  },
   jwt: {
     accessTokenSecret: process.env.ACCESS_TOKEN_SECRET || '',
     refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET || '',
