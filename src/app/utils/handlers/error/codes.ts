@@ -44,6 +44,21 @@ const ErrorCodes: ErrorCodes = {
     message: 'The requested item was found.',
     statusCode: 302,
   },
+  UNAUTHORIZED: {
+    code: 'UNAUTHORIZED',
+    message: 'Unauthorized',
+    statusCode: 401,
+  },
+  FORBIDDEN: {
+    code: 'FORBIDDEN',
+    message: 'Forbidden',
+    statusCode: 403,
+  },
+  INTERNAL_SERVER_ERROR: {
+    code: 'INTERNAL_SERVER_ERROR',
+    message: 'Internal Server Error',
+    statusCode: 500,
+  },
 };
 
 export default ErrorCodes;
