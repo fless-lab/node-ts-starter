@@ -22,6 +22,6 @@ export const clientAuthentication = (
   if (username === validUser && password === validPass) {
     return next();
   } else {
-    return res.status(401).send('Unauthorized');
+    return res.status(403).send('Unauthorized');
   }
 };

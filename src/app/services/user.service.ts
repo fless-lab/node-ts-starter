@@ -6,7 +6,7 @@ import { BaseService } from './base.service';
 class UserService extends BaseService<IUserModel> {
   constructor() {
     const userRepo = new UserRepository(UserModel);
-    super(userRepo, true, ['profilePicture']);
+    super(userRepo, true /*, ['profilePicture']*/);
     this.searchFields = ['firstName', 'lastName', 'email'];
   }
 }
