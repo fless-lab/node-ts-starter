@@ -229,6 +229,22 @@ class JwtService {
       );
     });
   }
+
+  removeFromRedis(key: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      client.del(key, (redisErr: any) => {
+        if (redisErr) {
+          console.error(redisErr.message);
+          const errorResponse = new ErrorResponse(
+            'INTERNAL_SERVER_ERROR',
+            'Internal Server Error',
+          );
+          return reject(errorResponse);
+        }
+        resolve();
+      });
+    });
+  }
 }
 
 export default new JwtService();
