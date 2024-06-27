@@ -42,6 +42,11 @@ interface Config {
     smtpPort: number;
     webappPort: number;
   };
+  session: {
+    secret: string;
+  };
+  viewEngines: string[];
+  defaultViewEngine: string;
 }
 
 const config: Config = {
@@ -84,6 +89,11 @@ const config: Config = {
     smtpPort: parseInt(process.env.MAILDEV_SMTP || '9025', 10),
     webappPort: parseInt(process.env.MAILDEV_WEBAPP_PORT || '9080', 10),
   },
+  session: {
+    secret: process.env.SESSION_SECRET || 'your-session-secret',
+  },
+  viewEngines: ['ejs', 'pug', 'handlebars', 'nunjucks'], //Supported view engines
+  defaultViewEngine: process.env.VIEW_ENGINE || 'ejs',
 };
 
 export default config;
