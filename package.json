@@ -32,7 +32,6 @@
   "author": "Abdou-Raouf ATARMLA",
   "license": "ISC",
   "dependencies": {
-    "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -41,14 +40,15 @@
     "express-brute-mongo": "^1.0.0",
     "express-brute-redis": "^0.0.1",
     "express-rate-limit": "^7.3.1",
+    "handlebars": "^4.7.8",
     "helmet": "^7.1.0",
-    "http-errors": "^2.0.0",
     "ioredis": "^5.4.1",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "minio": "^8.0.0",
     "mongoose": "^8.4.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.14"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
@@ -61,6 +61,8 @@
     "@types/morgan": "^1.9.9",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/nodemailer": "^6.4.15",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",

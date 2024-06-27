@@ -9,9 +9,6 @@ interface Config {
   enableClientAuth: boolean;
   basicAuthUser: string;
   basicAuthPass: string;
-  bcrypt: {
-    saltRounds: number;
-  };
   jwt: {
     accessTokenSecret: string;
     refreshTokenSecret: string;
@@ -48,11 +45,16 @@ interface Config {
     apiPort: number;
     consolePort: number;
   };
-  maildev: {
+  mail: {
     host: string;
     port: number;
-    smtpPort: number;
-    webappPort: number;
+    user: string;
+    pass: string;
+    from: string;
+    fromName: string;
+  };
+  bcrypt: {
+    saltRounds: number;
   };
 }
 
@@ -63,9 +65,6 @@ const config: Config = {
   enableClientAuth: process.env.ENABLE_CLIENT_AUTH === 'true',
   basicAuthUser: process.env.BASIC_AUTH_USER || 'admin',
   basicAuthPass: process.env.BASIC_AUTH_PASS || 'secret',
-  bcrypt: {
-    saltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10),
-  },
   jwt: {
     accessTokenSecret: process.env.ACCESS_TOKEN_SECRET || '',
     refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET || '',
@@ -95,11 +94,11 @@ const config: Config = {
     tokenExpireTime: parseInt(
       process.env.REDIS_TOKEN_EXPIRE_TIME || '31536000',
       10,
-    ), // 1 year in seconds
+    ),
     blacklistExpireTime: parseInt(
       process.env.REDIS_BLACKLIST_EXPIRE_TIME || '2592000',
       10,
-    ), // 1 month in seconds
+    ),
   },
   minio: {
     endpoint: process.env.MINIO_ENDPOINT || 'localhost',
@@ -108,11 +107,26 @@ const config: Config = {
     apiPort: parseInt(process.env.MINIO_API_PORT || '9500', 10),
     consolePort: parseInt(process.env.MINIO_CONSOLE_PORT || '9050', 10),
   },
-  maildev: {
-    host: process.env.MAILDEV_HOST || 'localhost',
-    port: parseInt(process.env.MAILDEV_PORT || '1025', 10),
-    smtpPort: parseInt(process.env.MAILDEV_SMTP || '9025', 10),
-    webappPort: parseInt(process.env.MAILDEV_WEBAPP_PORT || '9080', 10),
+  mail: {
+    host:
+      process.env.NODE_ENV === 'production'
+        ? process.env.SMTP_HOST || ''
+        : process.env.MAILDEV_HOST || 'localhost',
+    port: parseInt(
+      process.env.NODE_ENV === 'production'
+        ? process.env.SMTP_PORT || '587'
+        : process.env.MAILDEV_PORT || '1025',
+      10,
+    ),
+    user:
+      process.env.NODE_ENV === 'production' ? process.env.SMTP_USER || '' : '',
+    pass:
+      process.env.NODE_ENV === 'production' ? process.env.SMTP_PASS || '' : '',
+    from: process.env.FROM_EMAIL || 'no-reply@myapp.com',
+    fromName: process.env.FROM_NAME || 'Your Service Name',
+  },
+  bcrypt: {
+    saltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10),
   },
 };
 
