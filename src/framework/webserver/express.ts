@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -9,6 +10,8 @@ import config from '../../config';
 import { clientAuthentication } from '../../app/utils/middlewares';
 import path from 'path';
 import bruteForce from '../../app/utils/middlewares/bruteforce';
+import initializeViewEngine from '../view-engine';
+import { initializeSessionAndFlash } from '../session-flash';
 
 const app = express();
 const morganEnv = config.runningProd ? 'combined' : 'dev';
@@ -45,6 +48,12 @@ app.use(morgan(morganEnv));
 app.use(express.json());
 app.disable('x-powered-by'); // Disable X-Powered-By header
 
+// Initialize Session and Flash
+initializeSessionAndFlash(app);
+
+// Set view engine
+initializeViewEngine(app);
+
 // Apply brute force protection to login route
 app.post('/api/auth/login', bruteForce.prevent, (req, res) => {
   res.send('Login route');
@@ -53,15 +62,11 @@ app.post('/api/auth/login', bruteForce.prevent, (req, res) => {
 // Client authentication middleware
 app.use(clientAuthentication);
 
-// Serve the presentation.html file
-app.get('/', (req, res) => {
-  res.sendFile(
-    path.join(__dirname, '../../templates/app', 'presentation.html'),
-  );
-});
+// Serve routes
+app.get('/', routes);
 
 // API Routes
-app.use('/api', routes);
+// app.use('/api', routes);
 
 // Error handlers
 app.use(notFoundHandler);

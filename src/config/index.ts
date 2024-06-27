@@ -56,6 +56,11 @@ interface Config {
   bcrypt: {
     saltRounds: number;
   };
+  session: {
+    secret: string;
+  };
+  viewEngines: string[];
+  defaultViewEngine: string;
 }
 
 const config: Config = {
@@ -128,6 +133,11 @@ const config: Config = {
   bcrypt: {
     saltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10),
   },
+  session: {
+    secret: process.env.SESSION_SECRET || 'your-session-secret',
+  },
+  viewEngines: ['ejs', 'pug', 'handlebars', 'nunjucks'], //Supported view engines
+  defaultViewEngine: process.env.VIEW_ENGINE || 'ejs',
 };
 
 export default config;
