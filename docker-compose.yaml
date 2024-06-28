@@ -13,6 +13,8 @@ services:
       - redis
       - minio
       - maildev
+    volumes:
+        - .:/usr/src/app
 
   mongo:
     image: mongo
