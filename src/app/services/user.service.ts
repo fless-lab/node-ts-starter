@@ -10,7 +10,7 @@ import {
 import { BaseService } from './base.service';
 import bcrypt from 'bcrypt';
 
-class UserService extends BaseService<IUserModel> {
+class UserService extends BaseService<IUserModel, UserRepository> {
   constructor() {
     const userRepo = new UserRepository(UserModel);
     super(userRepo, true /*, ['profilePicture']*/);

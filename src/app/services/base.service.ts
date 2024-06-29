@@ -1,11 +1,11 @@
-import { BaseRepository } from '../repositories/base.repo';
 import { Document } from 'mongoose';
+import { BaseRepository } from '../repositories/base.repo';
 import ErrorResponse from '../utils/handlers/error/response';
 import { SuccessResponseType, ErrorResponseType } from '../utils/types';
 import { escapeRegex, slugify } from '../../helpers/string';
 
-export class BaseService<T extends Document> {
-  protected repository: BaseRepository<T>;
+export class BaseService<T extends Document, R extends BaseRepository<T>> {
+  protected repository: R;
   protected handleSlug: boolean;
   protected uniqueFields: string[];
   protected populateFields: string[];
@@ -13,7 +13,7 @@ export class BaseService<T extends Document> {
   protected searchFields?: string[];
 
   constructor(
-    repository: BaseRepository<T>,
+    repository: R,
     handleSlug = false,
     populateFields: string[] = [],
   ) {
