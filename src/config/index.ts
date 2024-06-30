@@ -61,6 +61,14 @@ interface Config {
   };
   viewEngines: string[];
   defaultViewEngine: string;
+  otp: {
+    length: number;
+    expiration: number;
+    purposes: Record<
+      string,
+      { code: string; title: string; description: string; message: string }
+    >;
+  };
 }
 
 const config: Config = {
@@ -136,8 +144,68 @@ const config: Config = {
   session: {
     secret: process.env.SESSION_SECRET || 'your-session-secret',
   },
-  viewEngines: ['ejs', 'pug', 'handlebars', 'nunjucks'], //Supported view engines
+  viewEngines: ['ejs', 'pug', 'handlebars', 'nunjucks'], // Supported view engines
   defaultViewEngine: process.env.VIEW_ENGINE || 'ejs',
+  otp: {
+    length: parseInt(process.env.OTP_LENGTH || '6', 10),
+    expiration: parseInt(process.env.OTP_EXPIRATION || '5') * 60 * 1000,
+    purposes: {
+      ACCOUNT_VERIFICATION: {
+        code: 'ACCOUNT_VERIFICATION',
+        title: 'Account Verification OTP',
+        description: 'Verify your account',
+        message: 'Your OTP code for account verification is:',
+      },
+      FORGOT_PASSWORD: {
+        code: 'FORGOT_PASSWORD',
+        title: 'Password Reset OTP',
+        description: 'Reset your password',
+        message: 'Your OTP code for resetting your password is:',
+      },
+      TWO_FACTOR_AUTHENTICATION: {
+        code: 'TWO_FACTOR_AUTHENTICATION',
+        title: 'Two-Factor Authentication OTP',
+        description: 'Two-factor authentication',
+        message: 'Your OTP code for two-factor authentication is:',
+      },
+      EMAIL_UPDATE: {
+        code: 'EMAIL_UPDATE',
+        title: 'Email Update OTP',
+        description: 'Update your email address',
+        message: 'Your OTP code for updating your email address is:',
+      },
+      PHONE_VERIFICATION: {
+        code: 'PHONE_VERIFICATION',
+        title: 'Phone Verification OTP',
+        description: 'Verify your phone number',
+        message: 'Your OTP code for phone verification is:',
+      },
+      TRANSACTION_CONFIRMATION: {
+        code: 'TRANSACTION_CONFIRMATION',
+        title: 'Transaction Confirmation OTP',
+        description: 'Confirm your transaction',
+        message: 'Your OTP code for transaction confirmation is:',
+      },
+      ACCOUNT_RECOVERY: {
+        code: 'ACCOUNT_RECOVERY',
+        title: 'Account Recovery OTP',
+        description: 'Recover your account',
+        message: 'Your OTP code for account recovery is:',
+      },
+      CHANGE_SECURITY_SETTINGS: {
+        code: 'CHANGE_SECURITY_SETTINGS',
+        title: 'Security Settings Change OTP',
+        description: 'Change your security settings',
+        message: 'Your OTP code for changing security settings is:',
+      },
+      LOGIN_CONFIRMATION: {
+        code: 'LOGIN_CONFIRMATION',
+        title: 'Login Confirmation OTP',
+        description: 'Confirm your login',
+        message: 'Your OTP code for login confirmation is:',
+      },
+    },
+  },
 };
 
 export default config;

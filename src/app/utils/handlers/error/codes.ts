@@ -64,6 +64,11 @@ const ErrorCodes: ErrorCodes = {
     message: 'Internal Server Error',
     statusCode: 500,
   },
+  MAIL_ERROR: {
+    code: 'MAIL_ERROR',
+    message: 'Failed to send email. Please try again later.',
+    statusCode: 500,
+  },
 };
 
 export default ErrorCodes;
