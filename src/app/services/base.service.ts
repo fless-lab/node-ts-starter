@@ -9,8 +9,8 @@ export class BaseService<T extends Document, R extends BaseRepository<T>> {
   protected handleSlug: boolean;
   protected uniqueFields: string[];
   protected populateFields: string[];
-  protected allowedFilterFields?: string[];
-  protected searchFields?: string[];
+  protected allowedFilterFields?: string[]; /* For other probable filters */
+  protected searchFields?: string[]; /* For search like keywork */
 
   constructor(
     repository: R,
