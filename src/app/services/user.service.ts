@@ -26,10 +26,7 @@ class UserService extends BaseService<IUserModel, UserRepository> {
         _id: userId,
       })) as SuccessResponseType<IUserModel>;
       if (!response.success || !response.document) {
-        return {
-          success: false,
-          error: response.error,
-        };
+        throw response.error;
       }
 
       const isValid = await bcrypt.compare(
@@ -57,10 +54,7 @@ class UserService extends BaseService<IUserModel, UserRepository> {
         _id: userId,
       })) as SuccessResponseType<IUserModel>;
       if (!response.success || !response.document) {
-        return {
-          success: false,
-          error: response.error,
-        };
+        throw response.error;
       }
 
       const hashedPassword = await bcrypt.hash(
@@ -73,10 +67,7 @@ class UserService extends BaseService<IUserModel, UserRepository> {
       )) as SuccessResponseType<IUserModel>;
 
       if (!updateResponse.success) {
-        return {
-          success: false,
-          error: updateResponse.error!,
-        };
+        throw updateResponse.error!;
       }
 
       return {
@@ -102,10 +93,7 @@ class UserService extends BaseService<IUserModel, UserRepository> {
         email,
       })) as SuccessResponseType<IUserModel>;
       if (!response.success || !response.document) {
-        return {
-          success: false,
-          error: response.error,
-        };
+        throw response.error;
       }
 
       return {
@@ -131,10 +119,7 @@ class UserService extends BaseService<IUserModel, UserRepository> {
         email,
       })) as SuccessResponseType<IUserModel>;
       if (!response.success || !response.document) {
-        return {
-          success: false,
-          error: response.error,
-        };
+        throw response.error;
       }
 
       const updateResponse = (await this.update(
@@ -143,10 +128,7 @@ class UserService extends BaseService<IUserModel, UserRepository> {
       )) as SuccessResponseType<IUserModel>;
 
       if (!updateResponse.success) {
-        return {
-          success: false,
-          error: updateResponse.error,
-        };
+        throw updateResponse.error;
       }
 
       return {
