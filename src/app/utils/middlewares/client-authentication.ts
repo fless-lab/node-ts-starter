@@ -1,23 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
+import config from '../../../config';
 
 export const clientAuthentication = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const auth = req.headers['authorization'];
+  const clientToken = req.headers['x-client-token'] as string;
 
-  if (!auth) {
-    res.setHeader('WWW-Authenticate', 'Basic');
+  if (!clientToken) {
     return res.status(401).send('Unauthorized');
   }
 
-  const [username, password] = Buffer.from(auth.split(' ')[1], 'base64')
+  const [username, password] = Buffer.from(clientToken, 'base64')
     .toString()
     .split(':');
 
-  const validUser = process.env.BASIC_AUTH_USER;
-  const validPass = process.env.BASIC_AUTH_PASS;
+  const validUser = config.basicAuthUser;
+  const validPass = config.basicAuthPass;
 
   if (username === validUser && password === validPass) {
     return next();
