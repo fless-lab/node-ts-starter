@@ -8,7 +8,6 @@ import notFoundHandler from '../../app/utils/handlers/error/notfound';
 import errorHandler from '../../app/utils/handlers/error/global';
 import config from '../../config';
 import { clientAuthentication } from '../../app/utils/middlewares';
-import path from 'path';
 import bruteForce from '../../app/utils/middlewares/bruteforce';
 import initializeViewEngine from '../view-engine';
 import { initializeSessionAndFlash } from '../session-flash';
@@ -55,18 +54,18 @@ initializeSessionAndFlash(app);
 initializeViewEngine(app);
 
 // Apply brute force protection to login route
-app.post('/api/auth/login', bruteForce.prevent, (req, res) => {
-  res.send('Login route');
-});
+// app.post('/api/auth/login', bruteForce.prevent, (req, res) => {
+//   res.send('Login route');
+// });
 
 // Client authentication middleware
 app.use(clientAuthentication);
 
 // Serve routes
-app.get('/', routes);
+// app.get('/', routes);
 
 // API Routes
-// app.use('/api', routes);
+app.use('/api/v1', routes);
 
 // Error handlers
 app.use(notFoundHandler);
