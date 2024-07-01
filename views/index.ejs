@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accueil</title>
+</head>
+<body>
+  <h1>Bienvenue sur notre plateforme</h1>
+  <% if (successMessages && successMessages.length > 0) { %>
+    <div>
+      <% successMessages.forEach(function(message) { %>
+        <p><%= message %></p>
+      <% }); %>
+    </div>
+  <% } %>
+  <% if (errorMessages && errorMessages.length > 0) { %>
+    <div>
+      <% errorMessages.forEach(function(message) { %>
+        <p><%= message %></p>
+      <% }); %>
+    </div>
+  <% } %>
+  <p>Ceci est la page d'accueil de notre plateforme.</p>
+</body>
+</html>

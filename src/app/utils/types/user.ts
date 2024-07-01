@@ -9,6 +9,8 @@ export interface IUser {
   password: string;
   role: TUserRole;
   profilePhoto?: string;
+  verified: boolean;
+  active: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

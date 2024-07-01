@@ -9,7 +9,7 @@ export const clientAuthentication = (
 
   if (!auth) {
     res.setHeader('WWW-Authenticate', 'Basic');
-    return res.status(401).send('Authentication required.');
+    return res.status(401).send('Unauthorized');
   }
 
   const [username, password] = Buffer.from(auth.split(' ')[1], 'base64')
@@ -22,6 +22,6 @@ export const clientAuthentication = (
   if (username === validUser && password === validPass) {
     return next();
   } else {
-    return res.status(403).send('Unauthorized');
+    return res.status(403).send('Forbidden');
   }
 };

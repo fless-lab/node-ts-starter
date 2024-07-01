@@ -39,10 +39,35 @@ const ErrorCodes: ErrorCodes = {
     message: 'Required field(s) missing.',
     statusCode: 400,
   },
+  BAD_REQUEST: {
+    code: 'BAD_REQUEST',
+    message: 'Required field(s) missing.',
+    statusCode: 400,
+  },
   FOUND: {
     code: 'FOUND',
     message: 'The requested item was found.',
     statusCode: 302,
+  },
+  UNAUTHORIZED: {
+    code: 'UNAUTHORIZED',
+    message: 'Unauthorized',
+    statusCode: 401,
+  },
+  FORBIDDEN: {
+    code: 'FORBIDDEN',
+    message: 'Forbidden',
+    statusCode: 403,
+  },
+  INTERNAL_SERVER_ERROR: {
+    code: 'INTERNAL_SERVER_ERROR',
+    message: 'Internal Server Error',
+    statusCode: 500,
+  },
+  MAIL_ERROR: {
+    code: 'MAIL_ERROR',
+    message: 'Failed to send email. Please try again later.',
+    statusCode: 500,
   },
 };
 

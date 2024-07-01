@@ -38,6 +38,60 @@ class UserController {
       ApiResponse.error(res, error as ErrorResponseType);
     }
   }
+
+  static async getUserById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const userId = req.params.id;
+      const response = await UserService.findOne({
+        _id: userId,
+      });
+
+      if (response.success) {
+        ApiResponse.success(res, response);
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      ApiResponse.error(res, error as ErrorResponseType);
+    }
+  }
 }
 
 export default UserController;
+
+/**
+ * static async createUser(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const response = (await UserService.create(
+        req.body,
+      )) as SuccessResponseType<IUserModel>;
+      if (response.success) {
+        // Send email to the newly created user
+        try {
+          await mailService.sendMail({
+            to: response.document.email,
+            subject: 'Welcome to Our Service',
+            text: 'Your account has been successfully created. Welcome aboard!',
+          });
+          console.log('Welcome email sent successfully');
+        } catch (emailError) {
+          console.error('Error sending welcome email:', emailError);
+        }
+
+        ApiResponse.success(res, response, 201);
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      ApiResponse.error(res, error as ErrorResponseType);
+    }
+  }
+ */
