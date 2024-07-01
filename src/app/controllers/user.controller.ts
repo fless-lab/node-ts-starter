@@ -59,34 +59,18 @@ class UserController {
       ApiResponse.error(res, error as ErrorResponseType);
     }
   }
-}
 
-export default UserController;
-
-/**
- * static async createUser(
+  static async getCurrentUser(
     req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
     try {
-      const response = (await UserService.create(
-        req.body,
-      )) as SuccessResponseType<IUserModel>;
-      if (response.success) {
-        // Send email to the newly created user
-        try {
-          await mailService.sendMail({
-            to: response.document.email,
-            subject: 'Welcome to Our Service',
-            text: 'Your account has been successfully created. Welcome aboard!',
-          });
-          console.log('Welcome email sent successfully');
-        } catch (emailError) {
-          console.error('Error sending welcome email:', emailError);
-        }
+      const userId = (req as any).payload?.aud as string;
+      const response = await UserService.getProfile(userId);
 
-        ApiResponse.success(res, response, 201);
+      if (response.success) {
+        ApiResponse.success(res, response);
       } else {
         throw response;
       }
@@ -94,4 +78,6 @@ export default UserController;
       ApiResponse.error(res, error as ErrorResponseType);
     }
   }
- */
+}
+
+export default UserController;

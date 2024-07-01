@@ -145,6 +145,47 @@ class UserService extends BaseService<IUserModel, UserRepository> {
       };
     }
   }
+
+  async getProfile(
+    userId?: string | undefined,
+  ): Promise<SuccessResponseType<IUserModel> | ErrorResponseType> {
+    try {
+      if (!userId) {
+        throw new ErrorResponse('BAD_REQUEST', 'User ID is required.');
+      }
+
+      const user = (await this.findOne({
+        _id: userId,
+      })) as SuccessResponseType<IUserModel>;
+
+      if (!user.success || !user.document) {
+        throw new ErrorResponse('NOT_FOUND_ERROR', 'User not found.');
+      }
+
+      return {
+        success: true,
+        document: {
+          firstname: user.document.firstname,
+          lastname: user.document.lastname,
+          email: user.document.email,
+          verified: user.document.verified,
+          active: user.document.active,
+          role: user.document.role,
+        } as any, // As we are not sending user password, we need to mention any here to avoid type check error
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error:
+          error instanceof ErrorResponse
+            ? error
+            : new ErrorResponse(
+                'INTERNAL_SERVER_ERROR',
+                (error as Error).message,
+              ),
+      };
+    }
+  }
 }
 
 export default new UserService();

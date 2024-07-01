@@ -83,7 +83,6 @@ class JwtService {
     const authHeader = req.headers['authorization'];
     const bearerToken = authHeader.split(' ');
     const token = bearerToken[1];
-
     JWT.verify(
       token,
       this.accessTokenSecret,
