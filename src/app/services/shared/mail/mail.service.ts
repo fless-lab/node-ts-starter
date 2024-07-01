@@ -2,9 +2,9 @@ import nodemailer, { Transporter } from 'nodemailer';
 import handlebars from 'handlebars';
 import fs from 'fs';
 import path from 'path';
-import config from '../../../config';
-import { ErrorResponseType, SuccessResponseType } from '../../utils/types';
-import ErrorResponse from '../../utils/handlers/error/response';
+import config from '../../../../config';
+import { ErrorResponseType, SuccessResponseType } from '../../../utils/types';
+import ErrorResponse from '../../../utils/handlers/error/response';
 
 class MailService {
   private transporter: Transporter;
@@ -45,7 +45,7 @@ class MailService {
       if (htmlTemplate) {
         const templatePath = path.join(
           __dirname,
-          '../../templates/mail/',
+          '../../../../templates/mail/',
           `${htmlTemplate}.html`,
         );
         const templateSource = fs.readFileSync(templatePath, 'utf-8');
@@ -77,31 +77,6 @@ class MailService {
         ),
       };
     }
-  }
-
-  async sendOtp({
-    to,
-    code,
-    purpose,
-  }: {
-    to: string;
-    code: string;
-    purpose: string;
-  }): Promise<SuccessResponseType<void> | ErrorResponseType> {
-    const otpPurpose = config.otp.purposes[purpose];
-    if (!otpPurpose) {
-      return {
-        success: false,
-        error: new ErrorResponse('BAD_REQUEST', 'Invalid OTP purpose provided'),
-      };
-    }
-
-    const subject = otpPurpose.title;
-    const text = `${otpPurpose.message} ${code}\n\nThis code is valid for ${
-      config.otp.expiration / 60000
-    } minutes.`;
-
-    return await this.sendMail({ to, subject, text });
   }
 }
 

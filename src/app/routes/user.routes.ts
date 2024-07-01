@@ -3,13 +3,10 @@ import UserController from '../controllers/user.controller';
 import { validate } from '../utils/middlewares/validate';
 import { createUserSchema } from '../utils/validators/user';
 
-const userRouter = Router();
+const router = Router();
 
-userRouter.post('/', validate(createUserSchema), (req, res, next) =>
-  UserController.createUser(req, res, next),
-);
-userRouter.get('/', (req, res, next) =>
-  UserController.getAllUsers(req, res, next),
-);
+router.post('/', validate(createUserSchema), UserController.createUser);
+router.get('/', UserController.getAllUsers);
+router.get('/:id', UserController.getUserById);
 
-export default userRouter;
+export default router;

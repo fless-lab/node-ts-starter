@@ -245,6 +245,68 @@ class JwtService {
       });
     });
   }
+
+  checkAccessToken(accessToken: string): Promise<{ userId: string }> {
+    return new Promise((resolve, reject) => {
+      JWT.verify(
+        accessToken,
+        this.accessTokenSecret,
+        (err: any, payload: any) => {
+          if (err) {
+            const message =
+              err.name === 'JsonWebTokenError' ? 'Unauthorized' : err.message;
+            const errorResponse = new ErrorResponse('UNAUTHORIZED', message);
+            return reject(errorResponse);
+          }
+
+          const userId = payload?.aud as string;
+
+          resolve({ userId });
+        },
+      );
+    });
+  }
+
+  checkRefreshToken(refreshToken: string): Promise<{ userId: string }> {
+    return new Promise((resolve, reject) => {
+      JWT.verify(
+        refreshToken,
+        this.refreshTokenSecret,
+        (err: any, payload: any) => {
+          if (err) {
+            const errorResponse = new ErrorResponse(
+              'UNAUTHORIZED',
+              'Unauthorized',
+            );
+            return reject(errorResponse);
+          }
+
+          const userId = payload?.aud as string;
+
+          client.get(userId, (redisErr: any, result: any) => {
+            if (redisErr) {
+              console.error(redisErr.message);
+              const errorResponse = new ErrorResponse(
+                'INTERNAL_SERVER_ERROR',
+                'Internal Server Error',
+              );
+              return reject(errorResponse);
+            }
+
+            if (refreshToken === result) {
+              return resolve({ userId });
+            }
+
+            const errorResponse = new ErrorResponse(
+              'UNAUTHORIZED',
+              'Unauthorized',
+            );
+            return reject(errorResponse);
+          });
+        },
+      );
+    });
+  }
 }
 
 export default new JwtService();

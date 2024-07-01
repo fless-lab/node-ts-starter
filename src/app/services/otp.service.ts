@@ -12,7 +12,7 @@ import UserService from './user.service';
 import { generateRandomOTP } from '../../helpers/generator';
 import { BaseService } from './base.service';
 import { IUserModel } from '../utils/types';
-import MailService from './shared/mail.service';
+import MailServiceUtilities from './shared/mail/mail.service.utility';
 
 class OTPService extends BaseService<IOTPModel, OTPRepository> {
   constructor() {
@@ -43,7 +43,7 @@ class OTPService extends BaseService<IOTPModel, OTPRepository> {
         purpose,
       });
 
-      const mailResponse = await MailService.sendOtp({
+      const mailResponse = await MailServiceUtilities.sendOtp({
         to: user.email,
         code: otp.code,
         purpose,

@@ -67,7 +67,7 @@ class UserService extends BaseService<IUserModel, UserRepository> {
       )) as SuccessResponseType<IUserModel>;
 
       if (!updateResponse.success) {
-        throw updateResponse.error!;
+        throw updateResponse.error;
       }
 
       return {
