@@ -1,26 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Accueil</title>
+  <style>
+    body {
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    p {
+      color: #666;
+    }
+    .message {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .success {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+    }
+    .routes {
+      margin-top: 20px;
+    }
+    .route {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .method {
+      font-weight: bold;
+    }
+    .path {
+      margin-left: 10px;
+    }
+    .middlewares {
+      margin-left: 10px;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
-  <h1>Bienvenue sur notre plateforme</h1>
-  <% if (successMessages && successMessages.length > 0) { %>
-    <div>
-      <% successMessages.forEach(function(message) { %>
-        <p><%= message %></p>
+  <div class="container">
+    <h1>Bienvenue sur notre plateforme</h1>
+    
+    <% if (successMessages && successMessages.length > 0) { %>
+      <div class="message success">
+        <% successMessages.forEach(function(message) { %>
+          <p><%= message %></p>
+        <% }); %>
+      </div>
+    <% } %>
+    
+    <% if (errorMessages && errorMessages.length > 0) { %>
+      <div class="message error">
+        <% errorMessages.forEach(function(message) { %>
+          <p><%= message %></p>
+        <% }); %>
+      </div>
+    <% } %>
+
+    <p>Ceci est la page d'accueil de notre plateforme.</p>
+
+    <div class="routes">
+      <h2>Routes disponibles :</h2>
+      <% routes.forEach(function(route) { %>
+        <div class="route">
+          <span class="method"><%= route.methods.join(', ') %></span>
+          <span class="path"><%= route.path %></span>
+          <span class="middlewares">[<%= route.middlewares.join(', ') %>]</span>
+        </div>
       <% }); %>
     </div>
-  <% } %>
-  <% if (errorMessages && errorMessages.length > 0) { %>
-    <div>
-      <% errorMessages.forEach(function(message) { %>
-        <p><%= message %></p>
-      <% }); %>
-    </div>
-  <% } %>
-  <p>Ceci est la page d'accueil de notre plateforme.</p>
+  </div>
 </body>
 </html>
