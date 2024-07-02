@@ -45,7 +45,7 @@ COPY --from=build /usr/src/app/build ./dist
 RUN addgroup -S myuser && adduser -S myuser -G myuser
 USER myuser
 
-ENV PORT=3000
+ENV PORT=9095
 
 # Expose the application port
 EXPOSE $PORT
