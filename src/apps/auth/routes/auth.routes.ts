@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { bruteForce, validate } from '../../shared';
+import { bruteForceMiddleware, validate } from '../../shared';
 import { AuthController } from '../controllers';
 import {
   forgotPasswordSchema,
@@ -30,13 +30,13 @@ router.post(
 router.post(
   '/login-with-password',
   validate(loginWithPasswordSchema),
-  bruteForce.prevent,
+  bruteForceMiddleware,
   AuthController.loginWithPassword,
 );
 router.post(
   '/login-with-otp',
   validate(loginWithOtpSchema),
-  bruteForce.prevent,
+  bruteForceMiddleware,
   AuthController.loginWithOtp,
 );
 router.post(

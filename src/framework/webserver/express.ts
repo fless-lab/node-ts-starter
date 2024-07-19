@@ -11,6 +11,7 @@ import {
   GlobalErrorHandler,
   NotFoundHandler,
   Routes as AllRoutes,
+  apiRateLimiter,
 } from '../../apps';
 
 const app = express();
@@ -56,6 +57,9 @@ initializeViewEngine(app);
 
 // Client authentication middleware
 app.use(clientAuthentication);
+
+// Client authentication middleware
+app.use(apiRateLimiter);
 
 // API Routes
 app.use('/api/v1', AllRoutes);
