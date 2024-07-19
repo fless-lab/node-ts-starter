@@ -3,14 +3,15 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import routes from '../../app/routes/routes';
-import notFoundHandler from '../../app/utils/handlers/error/notfound';
-import errorHandler from '../../app/utils/handlers/error/global';
 import config from '../../config';
-import { clientAuthentication } from '../../app/utils/middlewares';
-import bruteForce from '../../app/utils/middlewares/bruteforce';
 import initializeViewEngine from '../view-engine';
 import { initializeSessionAndFlash } from '../session-flash';
+import {
+  clientAuthentication,
+  GlobalErrorHandler,
+  NotFoundHandler,
+  Routes as AllRoutes,
+} from '../../apps';
 
 const app = express();
 const morganEnv = config.runningProd ? 'combined' : 'dev';
@@ -53,22 +54,14 @@ initializeSessionAndFlash(app);
 // Set view engine
 initializeViewEngine(app);
 
-// Apply brute force protection to login route
-// app.post('/api/auth/login', bruteForce.prevent, (req, res) => {
-//   res.send('Login route');
-// });
-
 // Client authentication middleware
 app.use(clientAuthentication);
 
-// Serve routes
-// app.get('/', routes);
-
 // API Routes
-app.use('/api/v1', routes);
+app.use('/api/v1', AllRoutes);
 
 // Error handlers
-app.use(notFoundHandler);
-app.use(errorHandler);
+app.use(NotFoundHandler);
+app.use(GlobalErrorHandler);
 
 export default app;

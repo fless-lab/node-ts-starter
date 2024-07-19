@@ -1,12 +1,10 @@
-import {
-  init as initRedis,
-  getClient,
-} from '../framework/database/redis/redis';
+import { DB } from '../framework';
 
 async function testRedisConnection(): Promise<void> {
   try {
-    initRedis();
-    const client = getClient();
+    const redis = DB.redis;
+    redis.init();
+    const client = redis.getClient();
     await client.ping();
     console.info('Redis is successfully connected and working.');
   } catch (error) {

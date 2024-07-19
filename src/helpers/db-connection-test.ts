@@ -1,9 +1,9 @@
-import { init } from '../framework/database/mongoose/db';
 import config from '../config';
+import { DB } from '../framework';
 
 export async function testDatabaseConnection() {
   try {
-    await init(config.db.uri, config.db.name);
+    await DB.mongo.init(config.db.uri, config.db.name);
     console.info('Mongodb initialised.');
   } catch (error) {
     console.error('Failed to initialize MongoDB:', error);
