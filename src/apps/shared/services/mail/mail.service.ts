@@ -5,6 +5,7 @@ import path from 'path';
 import config from '../../../../config';
 import { ErrorResponse } from '../../utils';
 import { ErrorResponseType, SuccessResponseType } from '../../types';
+import { logger } from '..';
 
 class MailService {
   private transporter: Transporter;
@@ -66,7 +67,7 @@ class MailService {
       await this.transporter.sendMail(mailOptions);
       return { success: true };
     } catch (error) {
-      console.error('Error sending email:', error);
+      logger.error('Error sending email', error as Error);
       return {
         success: false,
         error: new ErrorResponse(

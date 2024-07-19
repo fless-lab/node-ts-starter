@@ -2,6 +2,7 @@ import { RateLimiterMongo } from 'rate-limiter-flexible';
 import { Request, Response, NextFunction } from 'express';
 import config from '../../../config';
 import { DB } from '../../../framework';
+import { logger } from '../services';
 
 let bruteForceLimiter: RateLimiterMongo | undefined;
 
@@ -17,9 +18,9 @@ const setupRateLimiter = async (): Promise<void> => {
       blockDuration: Math.ceil(config.bruteForce.maxWait / 1000), // Durée de blocage en secondes
     });
 
-    console.log('Rate limiter configured.');
+    logger.info('Rate limiter configured.');
   } catch (error) {
-    console.error('Error setting up rate limiter:', error);
+    logger.error('Error setting up rate limiter', error as any);
   }
 };
 
@@ -31,6 +32,8 @@ const bruteForceMiddleware = async (
   next: NextFunction,
 ): Promise<void> => {
   if (!bruteForceLimiter) {
+    const error = new Error('Rate limiter not configured yet.');
+    logger.error(error.message, error);
     res.status(500).json({
       message: 'Rate limiter not configured yet. Please try again later.',
     });
@@ -42,9 +45,14 @@ const bruteForceMiddleware = async (
     next();
   } catch (rejRes: any) {
     const retrySecs = Math.ceil(rejRes.msBeforeNext / 1000) || 1;
-    !config.runningProd && res.set('Retry-After', String(retrySecs)); //Send Retry-After only in dev mode
+    if (!config.runningProd) {
+      res.set('Retry-After', String(retrySecs)); // Send Retry-After only in dev mode
+    }
+    logger.warn(
+      `<Bruteforce Suspected> Too many attempts from IP: ${req.ip}. Retry after ${retrySecs} seconds.`,
+    );
     res.status(429).json({
-      message: `Too many attempts, please try again after ${Math.ceil(rejRes.msBeforeNext / 60000)} minutes.`,
+      message: `<Bruteforce Suspected> Too many attempts, please try again after ${Math.ceil(rejRes.msBeforeNext / 60000)} minutes.`,
     });
   }
 };

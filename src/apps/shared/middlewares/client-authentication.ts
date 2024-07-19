@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import config from '../../../config';
+import { logger } from '../services';
 
 export const clientAuthentication = (
   req: Request,
@@ -9,6 +10,9 @@ export const clientAuthentication = (
   const clientToken = req.headers['x-client-token'] as string;
 
   if (!clientToken) {
+    logger.warn(
+      `Unauthorized access attempt from IP: ${req.ip} - No client token provided`,
+    );
     return res.status(401).send('Unauthorized');
   }
 
@@ -20,8 +24,12 @@ export const clientAuthentication = (
   const validPass = config.basicAuthPass;
 
   if (username === validUser && password === validPass) {
+    logger.info(`Client authenticated successfully from IP: ${req.ip}`);
     return next();
   } else {
+    logger.warn(
+      `Forbidden access attempt from IP: ${req.ip} - Invalid credentials`,
+    );
     return res.status(403).send('Forbidden');
   }
 };

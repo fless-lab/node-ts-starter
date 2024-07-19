@@ -1,3 +1,4 @@
+import { logger } from '../apps';
 import { DB } from '../framework';
 
 async function testRedisConnection(): Promise<void> {
@@ -6,9 +7,9 @@ async function testRedisConnection(): Promise<void> {
     redis.init();
     const client = redis.getClient();
     await client.ping();
-    console.info('Redis is successfully connected and working.');
+    logger.info('Redis is successfully connected and working.');
   } catch (error) {
-    console.error('Redis connection error:', error);
+    logger.error('Redis connection error:', error as Error);
     throw error;
   }
 }
