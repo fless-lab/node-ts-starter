@@ -1,5 +1,6 @@
 import rateLimit from 'express-rate-limit';
 import config from '../../../config';
+import { logger } from '../services';
 
 // TODO: Remove this later and use the one that's in helpers
 const msToMinutes = (ms: number): number => {
@@ -9,6 +10,12 @@ const msToMinutes = (ms: number): number => {
 export const apiRateLimiter = rateLimit({
   windowMs: config.rate.limit, // Time window in milliseconds
   max: config.rate.max, // Maximum number of requests
-  standardHeaders: !config.runningProd, //Show ratelimit headers when not in production
-  message: `Too many requests from this IP, please try again after ${msToMinutes(config.rate.limit)} minutes.`,
+  standardHeaders: !config.runningProd, // Show ratelimit headers when not in production
+  message: `<DDOS Suspected> Too many requests from this IP, please try again after ${msToMinutes(config.rate.limit)} minutes.`,
+  handler: (req, res) => {
+    logger.warn(`Too many requests from IP: ${req.ip}`);
+    res.status(429).json({
+      message: `<DDOS Suspected> Too many requests from this IP, please try again after ${msToMinutes(config.rate.limit)} minutes.`,
+    });
+  },
 });

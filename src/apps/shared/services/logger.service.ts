@@ -1,6 +1,5 @@
 import { createLogger, format, transports, Logger } from 'winston';
 import { Format } from 'logform';
-import config from '../../../config';
 
 class LoggerService {
   private logger: Logger;
@@ -29,7 +28,7 @@ class LoggerService {
     });
 
     // Environments other than production
-    if (!config.runningProd) {
+    if (process.env.NODE_ENV !== 'production') {
       this.logger.add(
         new transports.Console({
           format: format.combine(format.colorize(), logFormat),
@@ -38,20 +37,20 @@ class LoggerService {
     }
   }
 
-  log(level: string, message: string): void {
-    this.logger.log({ level, message });
+  log(level: string, message: string, metadata?: Record<string, any>): void {
+    this.logger.log({ level, message, ...metadata });
   }
 
-  info(message: string): void {
-    this.logger.info(message);
+  info(message: string, metadata?: Record<string, any>): void {
+    this.logger.info(message, metadata);
   }
 
-  warn(message: string): void {
-    this.logger.warn(message);
+  warn(message: string, metadata?: Record<string, any>): void {
+    this.logger.warn(message, metadata);
   }
 
-  error(message: string): void {
-    this.logger.error(message);
+  error(message: string, error?: Error): void {
+    this.logger.error(message, { error: error?.stack || error });
   }
 }
 
