@@ -1,10 +1,11 @@
 import { initServices } from './helpers';
 import config from './config';
+import { WebServer } from './framework';
 
 async function startServer() {
   try {
     await initServices();
-    const { default: app } = await import('./framework/webserver/express');
+    const app = WebServer.app;
     app.listen(config.port, () => {
       console.log(`Server running on http://localhost:${config.port}`);
     });

@@ -1,8 +1,8 @@
-import { init as initMinio } from '../framework/storage/minio/minio';
+import { S3 } from '../framework';
 
 async function testMinioConnection(): Promise<void> {
   try {
-    const client = initMinio();
+    const client = S3.minio.init();
     // Example of checking MinIO server status by listing buckets
     await client.listBuckets();
     console.info('MinIO is successfully connected and working.');

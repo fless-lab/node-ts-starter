@@ -1,1 +1,2 @@
-export * from './mongoose/db';
+export * from './mongoose';
+export * from './redis';
