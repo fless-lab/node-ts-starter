@@ -13,6 +13,7 @@ import {
   Routes as AllRoutes,
   apiRateLimiter,
 } from '../../apps';
+import { helmetCSPConfig } from '../../constants';
 
 const app = express();
 const morganEnv = config.runningProd ? 'combined' : 'dev';
@@ -20,27 +21,7 @@ const morganEnv = config.runningProd ? 'combined' : 'dev';
 // Express configuration
 app.use(cors());
 app.use(helmet()); // Use Helmet to add various security headers
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        'https://www.google-analytics.com',
-      ],
-      imgSrc: [
-        "'self'",
-        'data:',
-        'https://www.google-analytics.com',
-        'https://image.flaticon.com',
-        'https://images.unsplash.com',
-      ],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-    },
-  }),
-);
+app.use(helmetCSPConfig);
 app.use(helmet.frameguard({ action: 'deny' })); // Prevent the app from being displayed in an iframe
 app.use(helmet.xssFilter()); // Protect against XSS attacks
 app.use(helmet.noSniff()); // Prevent MIME type sniffing
