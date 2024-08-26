@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
-import config from '../../../config';
 import { IOTPModel } from '../types';
+import { config } from '../../../core';
 
 const otpSchema: Schema = new Schema(
   {

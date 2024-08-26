@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import config from '../../../config';
 import { logger } from '../services';
+import { config } from '../../../core';
 
 export const clientAuthentication = (
   req: Request,

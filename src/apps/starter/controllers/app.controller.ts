@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response, NextFunction } from 'express';
 import { listRoutes } from '../../../helpers';
-import { ViewService } from '../../shared';
+import { ViewService } from '../../../common';
 
 class AppController {
   static async showHomePage(

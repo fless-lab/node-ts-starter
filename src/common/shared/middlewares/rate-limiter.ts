@@ -1,6 +1,6 @@
 import rateLimit from 'express-rate-limit';
-import config from '../../../config';
 import { logger } from '../services';
+import { config } from '../../../core';
 
 // TODO: Remove this later and use the one that's in helpers
 const msToMinutes = (ms: number): number => {

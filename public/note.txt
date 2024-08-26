@@ -1,0 +1,1 @@
+Here (/public) we must pu static files
