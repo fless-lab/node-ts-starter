@@ -2,10 +2,10 @@ import nodemailer, { Transporter } from 'nodemailer';
 import handlebars from 'handlebars';
 import fs from 'fs';
 import path from 'path';
-import config from '../../../../config';
 import { ErrorResponse } from '../../utils';
 import { ErrorResponseType, SuccessResponseType } from '../../types';
 import { logger } from '..';
+import { config } from '../../../../core';
 
 class MailService {
   private transporter: Transporter;

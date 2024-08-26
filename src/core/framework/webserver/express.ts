@@ -6,14 +6,14 @@ import morgan from 'morgan';
 import config from '../../config';
 import initializeViewEngine from '../view-engine';
 import { initializeSessionAndFlash } from '../session-flash';
+import { helmetCSPConfig } from '../../constants';
 import {
+  apiRateLimiter,
   clientAuthentication,
   GlobalErrorHandler,
   NotFoundHandler,
   Routes as AllRoutes,
-  apiRateLimiter,
-} from '../../apps';
-import { helmetCSPConfig } from '../../constants';
+} from '../../../common';
 
 const app = express();
 const morganEnv = config.runningProd ? 'combined' : 'dev';

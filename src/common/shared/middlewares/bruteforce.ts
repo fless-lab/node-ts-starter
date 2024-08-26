@@ -1,8 +1,7 @@
 import { RateLimiterMongo } from 'rate-limiter-flexible';
 import { Request, Response, NextFunction } from 'express';
-import config from '../../../config';
-import { DB } from '../../../framework';
 import { logger } from '../services';
+import { config, DB } from '../../../core';
 
 let bruteForceLimiter: RateLimiterMongo | undefined;
 

@@ -1,7 +1,6 @@
 import { initServices } from './helpers';
-import config from './config';
-import { WebServer } from './framework';
-import { logger } from './apps';
+import { logger } from './common';
+import { config, WebServer } from './core';
 
 async function startServer() {
   try {

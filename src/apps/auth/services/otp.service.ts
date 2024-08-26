@@ -1,12 +1,12 @@
-import config from '../../../config';
-import { generateRandomOTP } from '../../../helpers';
 import {
   BaseService,
   ErrorResponse,
   ErrorResponseType,
   MailServiceUtilities,
   SuccessResponseType,
-} from '../../shared';
+} from '../../../common';
+import { config } from '../../../core';
+import { generateRandomOTP } from '../../../helpers';
 import { IUserModel, UserService } from '../../users';
 import { OTPModel } from '../models';
 import { OTPRepository } from '../repositories';

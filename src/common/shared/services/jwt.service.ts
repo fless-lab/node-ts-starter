@@ -1,8 +1,7 @@
 import JWT, { SignOptions } from 'jsonwebtoken';
-import config from '../../../config';
 import { ApiResponse, ErrorResponse } from '../utils';
-import { DB } from '../../../framework';
 import { logger } from './logger.service';
+import { config, DB } from '../../../core';
 
 const redis = DB.redis;
 

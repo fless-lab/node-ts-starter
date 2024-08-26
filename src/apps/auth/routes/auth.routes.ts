@@ -1,6 +1,4 @@
 import { Router } from 'express';
-
-import { bruteForceMiddleware, validate } from '../../shared';
 import { AuthController } from '../controllers';
 import {
   forgotPasswordSchema,
@@ -13,6 +11,7 @@ import {
   resetPasswordSchema,
   verifyAccountSchema,
 } from '../validators';
+import { bruteForceMiddleware, validate } from '../../../common';
 
 const router = Router();
 
