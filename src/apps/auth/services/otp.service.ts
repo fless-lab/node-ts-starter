@@ -1,11 +1,10 @@
 import {
-  BaseService,
   ErrorResponse,
   ErrorResponseType,
   MailServiceUtilities,
   SuccessResponseType,
 } from '../../../common';
-import { config } from '../../../core';
+import { BaseService, config } from '../../../core';
 import { generateRandomOTP } from '../../../helpers';
 import { IUserModel, UserService } from '../../users';
 import { OTPModel } from '../models';

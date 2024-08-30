@@ -1,8 +1,11 @@
 import { Document } from 'mongoose';
-import { BaseRepository } from '../repositories';
-import { ErrorResponse } from '../utils';
-import { escapeRegex, slugify } from '../../../helpers';
-import { ErrorResponseType, SuccessResponseType } from '../types';
+import { escapeRegex, slugify } from '../../../../helpers';
+import { BaseRepository } from '..';
+import {
+  ErrorResponse,
+  ErrorResponseType,
+  SuccessResponseType,
+} from '../../../../common';
 
 export class BaseService<T extends Document, R extends BaseRepository<T>> {
   protected repository: R;

@@ -1,4 +1,3 @@
-export * from './base.service';
 export { default as JwtService } from './jwt.service';
 export { default as ViewService } from './view.service';
 export * from './mail';

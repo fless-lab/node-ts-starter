@@ -3,12 +3,12 @@ import { IUserModel } from '../types';
 import { UserRepository } from '../repositories';
 import { UserModel } from '../models';
 import {
-  BaseService,
   ErrorResponse,
   ErrorResponseType,
   SuccessResponseType,
 } from '../../../common';
 import { config } from '../../../core';
+import { BaseService } from '../../../core';
 
 class UserService extends BaseService<IUserModel, UserRepository> {
   constructor() {
