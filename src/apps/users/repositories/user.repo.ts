@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
 import { IUserModel } from '../types';
-import { BaseRepository } from '../../shared';
+import { BaseRepository } from '../../../common/shared';
 
 export class UserRepository extends BaseRepository<IUserModel> {
   constructor(model: Model<IUserModel>) {

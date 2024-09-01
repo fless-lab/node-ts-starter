@@ -1,4 +1,3 @@
-import config from '../../../config';
 import { generateRandomOTP } from '../../../helpers';
 import {
   BaseService,
@@ -6,11 +5,12 @@ import {
   ErrorResponseType,
   MailServiceUtilities,
   SuccessResponseType,
-} from '../../shared';
+} from '../../../common/shared';
 import { IUserModel, UserService } from '../../users';
 import { OTPModel } from '../models';
 import { OTPRepository } from '../repositories';
 import { IOTPModel, TOTPPurpose } from '../types';
+import { config } from '../../../core/config';
 
 class OTPService extends BaseService<IOTPModel, OTPRepository> {
   constructor() {

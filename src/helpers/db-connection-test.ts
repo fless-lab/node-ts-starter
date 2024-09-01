@@ -1,5 +1,5 @@
-import config from '../config';
-import { DB } from '../framework';
+import { config } from '../core/config';
+import { DB } from '../core/framework';
 
 export async function testDatabaseConnection() {
   try {

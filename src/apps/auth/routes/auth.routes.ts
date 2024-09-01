@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { bruteForceMiddleware, validate } from '../../shared';
+import { bruteForceMiddleware, validate } from '../../../common/shared';
 import { AuthController } from '../controllers';
 import {
   forgotPasswordSchema,

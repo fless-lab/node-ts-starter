@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import config from '../../../config';
+import { config } from '../../../core/config';
 
 export type TOTPPurpose = keyof typeof config.otp.purposes;
 

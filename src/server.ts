@@ -1,7 +1,11 @@
+process.on('uncaughtException', function (err) {
+  console.error('Uncaught Exception:', err);
+});
+
 import { initServices } from './helpers';
-import config from './config';
-import { WebServer } from './framework';
-import { logger } from './apps';
+import { WebServer } from './core/framework';
+import { logger } from './common/shared';
+import { config } from './core/config';
 
 async function startServer() {
   try {

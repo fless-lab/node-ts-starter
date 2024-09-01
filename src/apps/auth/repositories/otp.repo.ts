@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
-import config from '../../../config';
-import { BaseRepository } from '../../shared';
+import { config } from '../../../core/config';
+import { BaseRepository } from '../../../common/shared';
 import { IOTPModel, TOTPPurpose } from '../types';
 import { generateRandomOTP } from '../../../helpers';
 

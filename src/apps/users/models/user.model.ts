@@ -1,7 +1,7 @@
 import { Schema, model, CallbackError } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { IUserModel } from '../types';
-import config from '../../../config';
+import { config } from '../../../core/config';
 
 const UserSchema: Schema = new Schema(
   {

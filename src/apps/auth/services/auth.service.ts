@@ -1,12 +1,12 @@
 import { OTPService } from '.';
-import config from '../../../config';
 import {
   ErrorResponse,
   ErrorResponseType,
   JwtService,
   MailServiceUtilities,
   SuccessResponseType,
-} from '../../shared';
+} from '../../../common/shared';
+import { config } from '../../../core/config';
 import { IUserModel, UserService } from '../../users';
 import { IOTPModel } from '../types';
 

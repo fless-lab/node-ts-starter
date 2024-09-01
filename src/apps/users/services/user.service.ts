@@ -1,11 +1,11 @@
-import config from '../../../config';
+import { config } from '../../../core/config';
 import bcrypt from 'bcrypt';
 import {
   BaseService,
   ErrorResponse,
   ErrorResponseType,
   SuccessResponseType,
-} from '../../shared';
+} from '../../../common/shared';
 import { IUserModel } from '../types';
 import { UserRepository } from '../repositories';
 import { UserModel } from '../models';
