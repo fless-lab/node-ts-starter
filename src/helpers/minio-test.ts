@@ -1,5 +1,5 @@
-import { logger } from '../apps';
-import { S3 } from '../framework';
+import { logger } from '../common';
+import { S3 } from '../core';
 
 async function testMinioConnection(): Promise<void> {
   try {

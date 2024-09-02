@@ -23,13 +23,17 @@ echo "✅ Docker is installed."
 
 echo "🔄 Checking for Docker Compose installation..."
 
-# Check if Docker Compose is installed
-if ! command -v docker-compose &> /dev/null; then
+# Check if Docker Compose is installed and determine which command to use
+if command -v docker-compose &> /dev/null; then
+    DOCKER_COMPOSE_CMD="docker-compose"
+    echo "✅ Docker Compose (standalone) is installed."
+elif docker compose version &> /dev/null; then
+    DOCKER_COMPOSE_CMD="docker compose"
+    echo "✅ Docker Compose (plugin) is installed."
+else
     echo "❌ Docker Compose could not be found. Please install Docker Compose and try again."
     exit 1
 fi
-
-echo "✅ Docker Compose is installed."
 
 # Run the install script
 echo "🔄 Running install.sh..."
@@ -42,5 +46,5 @@ echo "🔄 NODE_ENV set to $ENVIRONMENT in .env file."
 
 # Start the Docker containers
 echo "🔄 Starting Docker containers in $ENVIRONMENT mode..."
-docker-compose up --build
+$DOCKER_COMPOSE_CMD up --build
 echo "✅ Docker containers started."
