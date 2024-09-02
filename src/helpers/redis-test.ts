@@ -1,5 +1,5 @@
-import { logger } from '../common';
-import { DB } from '../core';
+import { logger } from '../apps';
+import { DB } from '../framework';
 
 async function testRedisConnection(): Promise<void> {
   try {
