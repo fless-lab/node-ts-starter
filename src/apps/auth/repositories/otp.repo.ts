@@ -1,8 +1,8 @@
 import { Model } from 'mongoose';
 import { config } from '../../../core/config';
-import { BaseRepository } from '../../../common/shared';
 import { IOTPModel, TOTPPurpose } from '../types';
 import { generateRandomOTP } from '../../../helpers';
+import { BaseRepository } from '../../../core/engine';
 
 class OTPRepository extends BaseRepository<IOTPModel> {
   constructor(model: Model<IOTPModel>) {

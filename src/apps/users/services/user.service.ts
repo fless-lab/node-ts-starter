@@ -1,14 +1,14 @@
 import { config } from '../../../core/config';
 import bcrypt from 'bcrypt';
 import {
-  BaseService,
   ErrorResponse,
   ErrorResponseType,
   SuccessResponseType,
 } from '../../../common/shared';
 import { IUserModel } from '../types';
-import { UserRepository } from '../repositories';
 import { UserModel } from '../models';
+import { UserRepository } from '../repositories';
+import { BaseService } from '../../../core/engine';
 
 class UserService extends BaseService<IUserModel, UserRepository> {
   constructor() {
