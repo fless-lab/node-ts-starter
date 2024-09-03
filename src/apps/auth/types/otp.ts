@@ -1,17 +1,17 @@
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { config } from '../../../core/config';
+import { IBaseModel } from '../../../core/engine';
 
 export type TOTPPurpose = keyof typeof config.otp.purposes;
 
 export interface IOTP {
   code: string;
-  user: string;
+  user: Types.ObjectId;
   used: boolean;
   isFresh: boolean;
   expiresAt: Date;
   purpose: TOTPPurpose;
-  createdAt?: Date;
-  updatedAt?: Date;
+  attempts?: number;
 }
 
-export interface IOTPModel extends IOTP, Document {}
+export interface IOTPModel extends IOTP, IBaseModel, Document {}

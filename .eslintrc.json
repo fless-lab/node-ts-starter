@@ -29,7 +29,8 @@
           "{}": false
         }
       }
-    ]
+    ],
+     "@typescript-eslint/ban-ts-comment": "warn"
   },
   "ignorePatterns": ["node_modules/", "dist/", "build/"]
 }

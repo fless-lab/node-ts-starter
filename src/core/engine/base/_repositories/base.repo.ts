@@ -22,36 +22,64 @@ export class BaseRepository<T extends Document> {
   async findAll(
     query: FilterQuery<T> = {},
     options: QueryOptions = {},
+    includeDeleted = false,
   ): Promise<T[]> {
-    return await this.model.find(query, null, options).exec();
+    const effectiveQuery = includeDeleted
+      ? query
+      : { ...query, deletedAt: null };
+    return await this.model.find(effectiveQuery, null, options).exec();
   }
 
   async findOne(
     query: FilterQuery<T>,
     options: QueryOptions = {},
+    includeDeleted = false,
   ): Promise<T | null> {
-    return await this.model.findOne(query, null, options).exec();
+    const effectiveQuery = includeDeleted
+      ? query
+      : { ...query, deletedAt: null };
+    return await this.model.findOne(effectiveQuery, null, options).exec();
   }
 
   async update(
     query: FilterQuery<T>,
     update: UpdateQuery<T>,
     options: QueryOptions = {},
+    includeDeleted = false,
   ): Promise<T | null> {
+    const effectiveQuery = includeDeleted
+      ? query
+      : { ...query, deletedAt: null };
     return await this.model
-      .findOneAndUpdate(query, update, { new: true, ...options })
+      .findOneAndUpdate(effectiveQuery, update, { new: true, ...options })
       .exec();
   }
 
   async delete(
     query: FilterQuery<T>,
     options: QueryOptions = {},
+    softDelete = true,
   ): Promise<T | null> {
-    return await this.model.findOneAndDelete(query, options).exec();
+    if (softDelete) {
+      return await this.update(
+        query,
+        { $set: { deletedAt: new Date() } } as UpdateQuery<T>,
+        options,
+        true,
+      );
+    } else {
+      return await this.model.findOneAndDelete(query, options).exec();
+    }
   }
 
-  async countDocuments(query: FilterQuery<T> = {}): Promise<number> {
-    return await this.model.countDocuments(query).exec();
+  async countDocuments(
+    query: FilterQuery<T> = {},
+    includeDeleted = false,
+  ): Promise<number> {
+    const effectiveQuery = includeDeleted
+      ? query
+      : { ...query, deletedAt: null };
+    return await this.model.countDocuments(effectiveQuery).exec();
   }
 
   async aggregate(pipeline: PipelineStage[]): Promise<any[]> {

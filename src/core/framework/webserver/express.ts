@@ -37,7 +37,7 @@ initializeSessionAndFlash(app);
 initializeViewEngine(app);
 
 // Client authentication middleware
-// app.use(clientAuthentication);
+app.use(clientAuthentication);
 
 // Client authentication middleware
 app.use(apiRateLimiter);

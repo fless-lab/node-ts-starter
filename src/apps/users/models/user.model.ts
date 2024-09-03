@@ -1,9 +1,12 @@
-import { Schema, model, CallbackError } from 'mongoose';
+import { CallbackError } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { IUserModel } from '../types';
+import { BaseModel, createBaseSchema } from '../../../core/engine';
 import { config } from '../../../core/config';
 
-const UserSchema: Schema = new Schema(
+const USER_MODEL_NAME = 'User';
+
+const UserSchema = createBaseSchema<IUserModel>(
   {
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
@@ -14,15 +17,16 @@ const UserSchema: Schema = new Schema(
     active: { type: Boolean, default: true },
     verified: { type: Boolean, default: false },
   },
-  { timestamps: true },
+  {
+    modelName: USER_MODEL_NAME,
+  },
 );
 
-// Pre-hook for hashing the password before saving
 UserSchema.pre('save', async function (next) {
   try {
     if (this.isNew || this.isModified('password')) {
       const salt = await bcrypt.genSalt(config.bcrypt.saltRounds);
-      const hashedPassword = await bcrypt.hash(this.password as string, salt);
+      const hashedPassword = await bcrypt.hash(this.password, salt);
       this.password = hashedPassword;
     }
     next();
@@ -31,6 +35,9 @@ UserSchema.pre('save', async function (next) {
   }
 });
 
-const UserModel = model<IUserModel>('User', UserSchema);
+const UserModel = new BaseModel<IUserModel>(
+  USER_MODEL_NAME,
+  UserSchema,
+).getModel();
 
 export default UserModel;

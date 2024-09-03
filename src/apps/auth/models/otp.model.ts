@@ -1,8 +1,12 @@
-import { Schema, model } from 'mongoose';
 import { IOTPModel } from '../types';
 import { config } from '../../../core/config';
+import { Schema } from 'mongoose';
+import { BaseModel, createBaseSchema } from '../../../core/engine';
+import { attemptLimitingPlugin } from './_plugins';
 
-const otpSchema: Schema = new Schema(
+const OTP_MODEL_NAME = 'OTP';
+
+const otpSchema = createBaseSchema<IOTPModel>(
   {
     code: {
       type: String,
@@ -30,10 +34,18 @@ const otpSchema: Schema = new Schema(
       enum: Object.keys(config.otp.purposes),
       required: true,
     },
+    attempts: {
+      type: Number,
+      default: 0,
+    },
   },
-  { timestamps: true },
+  {
+    excludePlugins: ['softDelete'],
+    includePlugins: [[attemptLimitingPlugin, { maxAttempts: 5 }]],
+    modelName: OTP_MODEL_NAME,
+  },
 );
 
-const OTPModel = model<IOTPModel>('OTP', otpSchema);
+const OTPModel = new BaseModel<IOTPModel>(OTP_MODEL_NAME, otpSchema).getModel();
 
 export default OTPModel;
