@@ -12,8 +12,8 @@ export class BaseService<T extends Document, R extends BaseRepository<T>> {
   protected handleSlug: boolean;
   protected uniqueFields: string[];
   protected populateFields: string[];
-  protected allowedFilterFields?: string[]; /* For other probable filters */
-  protected searchFields?: string[]; /* For search like keywork */
+  protected allowedFilterFields?: string[];
+  protected searchFields?: string[];
 
   constructor(
     repository: R,
@@ -134,6 +134,7 @@ export class BaseService<T extends Document, R extends BaseRepository<T>> {
     limit = 10,
     searchTerm = '',
     paginate = true,
+    includeDeleted = false,
   }: {
     query?: Record<string, any>;
     sort?: Record<string, any>;
@@ -141,6 +142,7 @@ export class BaseService<T extends Document, R extends BaseRepository<T>> {
     limit?: number;
     searchTerm?: string;
     paginate?: boolean;
+    includeDeleted?: boolean;
   } = {}): Promise<SuccessResponseType<T> | ErrorResponseType> {
     try {
       let searchQuery = this.filterQueryFields(query);
@@ -151,13 +153,20 @@ export class BaseService<T extends Document, R extends BaseRepository<T>> {
         }));
         searchQuery = { ...searchQuery, $or: searchConditions };
       }
-      const documents = await this.repository.findAll(searchQuery, {
-        sort,
-        skip: (page - 1) * limit,
-        limit: paginate ? limit : undefined,
-      });
-      const total = await this.repository.countDocuments();
-      const _results = await this.repository.countDocuments(searchQuery);
+      const documents = await this.repository.findAll(
+        searchQuery,
+        {
+          sort,
+          skip: (page - 1) * limit,
+          limit: paginate ? limit : undefined,
+        },
+        includeDeleted,
+      );
+      const total = await this.repository.countDocuments({}, includeDeleted);
+      const _results = await this.repository.countDocuments(
+        searchQuery,
+        includeDeleted,
+      );
       const results = paginate ? documents.length : total;
       return {
         success: true,
@@ -185,9 +194,10 @@ export class BaseService<T extends Document, R extends BaseRepository<T>> {
 
   async findOne(
     query: Record<string, any>,
+    includeDeleted = false,
   ): Promise<SuccessResponseType<T> | ErrorResponseType> {
     try {
-      const document = await this.repository.findOne(query);
+      const document = await this.repository.findOne(query, {}, includeDeleted);
       if (!document) {
         throw new ErrorResponse(
           'NOT_FOUND_ERROR',
@@ -209,9 +219,14 @@ export class BaseService<T extends Document, R extends BaseRepository<T>> {
   async update(
     query: Record<string, any>,
     updateInput: Partial<T>,
+    includeDeleted = false,
   ): Promise<SuccessResponseType<T> | ErrorResponseType> {
     try {
-      const documentToUpdate = await this.repository.findOne(query);
+      const documentToUpdate = await this.repository.findOne(
+        query,
+        {},
+        includeDeleted,
+      );
       if (!documentToUpdate) {
         throw new ErrorResponse(
           'NOT_FOUND_ERROR',
@@ -253,6 +268,8 @@ export class BaseService<T extends Document, R extends BaseRepository<T>> {
       const updatedDocument = await this.repository.update(
         query,
         fieldsToUpdate,
+        {},
+        includeDeleted,
       );
       if (!updatedDocument) {
         throw new ErrorResponse(
@@ -274,13 +291,20 @@ export class BaseService<T extends Document, R extends BaseRepository<T>> {
 
   async delete(
     query: Record<string, any>,
+    softDelete = true,
   ): Promise<SuccessResponseType<T> | ErrorResponseType> {
     try {
-      const deletedDocument = await this.repository.delete(query);
+      const deletedDocument = await this.repository.delete(
+        query,
+        {},
+        softDelete,
+      );
       if (!deletedDocument) {
         throw new ErrorResponse(
           'NOT_FOUND_ERROR',
-          'Document to delete not found.',
+          softDelete
+            ? 'Document to soft delete not found.'
+            : 'Document to delete not found.',
         );
       }
       return { success: true, document: deletedDocument };
