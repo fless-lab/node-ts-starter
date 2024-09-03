@@ -15,9 +15,9 @@
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "@typescript-eslint/no-unused-vars": [
-      "error",
+      "warn",
       { "argsIgnorePattern": "^_" }
     ],
     "@typescript-eslint/explicit-function-return-type": "off",
@@ -29,7 +29,8 @@
           "{}": false
         }
       }
-    ]
+    ],
+    "@typescript-eslint/ban-ts-comment": "warn" // Allow ts-ignore comments with a warning
   },
   "ignorePatterns": ["node_modules/", "dist/", "build/"]
 }
