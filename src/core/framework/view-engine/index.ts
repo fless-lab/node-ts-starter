@@ -1,5 +1,6 @@
 import { Application } from 'express';
 import { config } from '../../config';
+import { logger } from '../../../common/shared';
 
 const initializeViewEngine = async (app: Application): Promise<void> => {
   const viewEngine = config.defaultViewEngine;
@@ -13,9 +14,12 @@ const initializeViewEngine = async (app: Application): Promise<void> => {
   try {
     const viewEngineModule = await import(`./${viewEngine}`);
     viewEngineModule.default(app);
-    console.log(`${viewEngine} view engine initialized.`);
+    logger.info(`${viewEngine} view engine initialized.`);
   } catch (error) {
-    console.error(`Failed to initialize ${viewEngine} view engine.`, error);
+    logger.error(
+      `Failed to initialize ${viewEngine} view engine.`,
+      error as Error,
+    );
     throw new Error(`View engine ${viewEngine} not supported.`);
   }
 };
