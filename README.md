@@ -2,6 +2,10 @@
 
 This project is a simple and lightweight Node.js boilerplate using TypeScript. It includes Docker configurations to run the application in both development and production modes, along with enhanced security features such as rate limiting and brute force protection.
 
+---
+
+Check our latest complete boilerplate for NodeTs [Node Typescript Wizard](https://github.com/fless-lab/ntw-init)
+
 ## Table of Contents
 
 1. [Prerequisites](#prerequisites)
