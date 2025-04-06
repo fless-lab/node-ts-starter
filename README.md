@@ -4,7 +4,7 @@ This project is a simple and lightweight Node.js boilerplate using TypeScript. I
 
 ---
 
-Check our latest complete boilerplate for NodeTs [Node Typescript Wizard](https://github.com/fless-lab/ntw-init)
+🛑🛑🛑 Check our latest complete boilerplate for NodeTs [Node Typescript Wizard](https://github.com/fless-lab/ntw-init) 
 
 ## Table of Contents
 
